@@ -3,6 +3,8 @@
 [![Build Alist ipkg](https://github.com/AlistGo/Alist-ikuai/actions/workflows/build.yml/badge.svg)](https://github.com/AlistGo/Alist-ikuai/actions/workflows/build.yml)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/AlistGo/Alist-ikuai)](https://github.com/AlistGo/Alist-ikuai/releases)
 
+[中文说明](README_CN.md)
+
 This repository provides an automated build system to package [Alist](https://github.com/AlistGo/alist) as an `.ipkg` application for iKuai routers.
 
 ## 🚀 Features
@@ -15,7 +17,7 @@ This repository provides an automated build system to package [Alist](https://gi
 
 1. Go to the [Releases](https://github.com/AlistGo/Alist-ikuai/releases) page.
 2. Download the latest `.ipkg` file (e.g., `alist-v3.57.0.ipkg`).
-3. Upload and install via iKuai Application Center -> Third-party Applications.
+3. Upload and install via iKuai Application Center -> Local Applications.
 
 ## ⚙️ Usage
 

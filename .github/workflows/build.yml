@@ -23,7 +23,7 @@ jobs:
           echo "Latest: $LATEST_TAG"
           echo "Current: $CURRENT_VERSION"
           
-          if [ "$LATEST_TAG" != "$CURRENT_VERSION" ]; then
+          if [ "$LATEST_TAG" != "$CURRENT_VERSION" ] || [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "update_needed=true" >> $GITHUB_OUTPUT
             echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
           else

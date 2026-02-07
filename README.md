@@ -31,4 +31,4 @@ This repository provides an automated build system to package [Alist](https://gi
 - [iKuai Official Site](https://www.ikuai8.com/)
 
 ---
-*Built with ❤️ by [Attributes](https://github.com/attributes)*
+*Built with ❤️ by [skysliences](https://github.com/skysliences)*

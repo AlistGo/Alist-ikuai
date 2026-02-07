@@ -29,4 +29,4 @@
 - [iKuai 官网](https://www.ikuai8.com/)
 
 ---
-*Built with ❤️ by [Attributes](https://github.com/attributes)*
+*Built with ❤️ by [skysliences](https://github.com/skysliences)*

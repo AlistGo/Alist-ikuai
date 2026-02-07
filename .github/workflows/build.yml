@@ -34,9 +34,11 @@ jobs:
         if: steps.check.outputs.update_needed == 'true'
         run: |
           VERSION=${{ steps.check.outputs.latest_tag }}
+          # Remove 'v' prefix for version string only, keep it for image tag if needed
+          VERSION_NO_V=${VERSION#v}
           # Update version and image tag in manifest.json
           # Use temp file to avoid inplace editing issues with jq
-          jq --arg v "$VERSION" '.version = $v | .image = "xhofe/alist:" + $v' alist/manifest.json > alist/manifest.json.tmp && mv alist/manifest.json.tmp alist/manifest.json
+          jq --arg v "$VERSION_NO_V" --arg tag "$VERSION" '.version = $v | .image = "xhofe/alist:" + $tag' alist/manifest.json > alist/manifest.json.tmp && mv alist/manifest.json.tmp alist/manifest.json
           
           # Update changelog
           echo "$VERSION - Automatic update" > alist/changelog

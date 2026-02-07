@@ -1,6 +1,6 @@
 {
   "name": "alist",
-  "version": "v3.57.0",
+  "version": "3.57.0",
   "display_name": "Alist",
   "image": "xhofe/alist:v3.57.0",
   "description": "A file list program that supports multiple storage. 一个支持多种存储的文件列表程序。",

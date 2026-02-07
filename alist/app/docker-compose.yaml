@@ -1,0 +1,25 @@
+services:
+  alist:
+    image: xhofe/alist:${IMAGE_VERSION}
+    container_name: alist-${NAME_NONCE}
+    deploy:
+      resources:
+        limits:
+          cpus: ${CPUS_LIMIT}
+          memory: ${MEMORY_LIMIT}
+    restart: ${RESTART}
+    ports:
+      - ${HOST_IP}:${APP_PORT_WEB}:5244/tcp
+    volumes:
+      - ./data:/opt/alist/data
+    env_file:
+      - ./environment
+    networks:
+      - doc_app_default
+    labels:
+      createdBy: "Alist"
+
+networks:
+  doc_app_default:
+    external: true
+    name: doc_app_default

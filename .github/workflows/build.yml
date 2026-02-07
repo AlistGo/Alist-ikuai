@@ -1,0 +1,65 @@
+name: Build Alist ipkg
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check for updates
+        id: check
+        run: |
+          LATEST_TAG=$(curl -s https://api.github.com/repos/AlistGo/alist/releases/latest | jq -r .tag_name)
+          # Default to v0.0.0 if manifest doesn't exist or is invalid to force update on first run if needed
+          CURRENT_VERSION=$(jq -r .version alist/manifest.json || echo "v0.0.0")
+          
+          echo "Latest: $LATEST_TAG"
+          echo "Current: $CURRENT_VERSION"
+          
+          if [ "$LATEST_TAG" != "$CURRENT_VERSION" ]; then
+            echo "update_needed=true" >> $GITHUB_OUTPUT
+            echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          else
+            echo "update_needed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Manifest
+        if: steps.check.outputs.update_needed == 'true'
+        run: |
+          VERSION=${{ steps.check.outputs.latest_tag }}
+          # Update version and image tag in manifest.json
+          # Use temp file to avoid inplace editing issues with jq
+          jq --arg v "$VERSION" '.version = $v | .image = "xhofe/alist:" + $v' alist/manifest.json > alist/manifest.json.tmp && mv alist/manifest.json.tmp alist/manifest.json
+          
+          # Update changelog
+          echo "$VERSION - Automatic update" > alist/changelog
+
+      - name: Build ipkg
+        if: steps.check.outputs.update_needed == 'true'
+        run: |
+          VERSION=${{ steps.check.outputs.latest_tag }}
+          # Build package
+          tar -czvf "alist-${VERSION}.ipkg" alist/
+
+      - name: Commit and Push
+        if: steps.check.outputs.update_needed == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add alist/manifest.json alist/changelog
+          git commit -m "Update to ${{ steps.check.outputs.latest_tag }}"
+          git push
+
+      - name: Release
+        if: steps.check.outputs.update_needed == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.check.outputs.latest_tag }}
+          files: alist-${{ steps.check.outputs.latest_tag }}.ipkg

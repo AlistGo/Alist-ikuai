@@ -8,6 +8,13 @@ services:
           cpus: ${CPUS_LIMIT}
           memory: ${MEMORY_LIMIT}
     restart: ${RESTART}
+    command: >
+      /bin/sh -c "
+        if [ ! -f /opt/alist/data/config.json ]; then
+          ./alist admin set 123456;
+        fi;
+        ./alist server
+      "
     ports:
       - ${HOST_IP}:${APP_PORT_WEB}:5244/tcp
     volumes:

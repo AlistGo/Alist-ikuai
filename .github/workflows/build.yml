@@ -59,12 +59,18 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add alist/manifest.json alist/changelog alist/app/docker-compose.yaml
-          git commit -m "Update to ${{ steps.check.outputs.latest_tag }}"
-          git push
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update to ${{ steps.check.outputs.latest_tag }}"
+            git push
+          fi
 
       - name: Release
         if: steps.check.outputs.update_needed == 'true'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.check.outputs.latest_tag }}
+          overwrite: true
           files: alist-${{ steps.check.outputs.latest_tag }}.ipkg

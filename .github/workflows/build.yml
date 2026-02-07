@@ -40,6 +40,9 @@ jobs:
           # Use temp file to avoid inplace editing issues with jq
           jq --arg v "$VERSION_NO_V" --arg tag "$VERSION" '.version = $v | .image = "xhofe/alist:" + $tag' alist/manifest.json > alist/manifest.json.tmp && mv alist/manifest.json.tmp alist/manifest.json
           
+          # Update image tag in docker-compose.yaml
+          sed -i "s|image: xhofe/alist:.*|image: xhofe/alist:$VERSION|g" alist/app/docker-compose.yaml
+          
           # Update changelog
           echo "$VERSION - Automatic update" > alist/changelog
 
@@ -55,7 +58,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add alist/manifest.json alist/changelog
+          git add alist/manifest.json alist/changelog alist/app/docker-compose.yaml
           git commit -m "Update to ${{ steps.check.outputs.latest_tag }}"
           git push
 

@@ -1,8 +1,8 @@
 {
   "name": "alist",
-  "version": "3.59.0",
+  "version": "3.60.0",
   "display_name": "Alist",
-  "image": "xhofe/alist:v3.59.0",
+  "image": "xhofe/alist:v3.60.0",
   "description": "一个支持多种存储的文件列表程序，使用 Gin 和 Solidjs 框架开发。默认密码:123456",
   "type": "1",
   "maintainer": "AlistGo",

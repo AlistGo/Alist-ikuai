@@ -1,6 +1,6 @@
 services:
   alist:
-    image: xhofe/alist:v3.59.0
+    image: xhofe/alist:v3.60.0
     container_name: alist-${NAME_NONCE}
     deploy:
       resources:
